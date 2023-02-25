@@ -1,0 +1,4 @@
+% WMI
+
+# List services with SystemName, ServiceName, username
+Get-WmiObject Win32_Service | ft SystemName,Name,StartName

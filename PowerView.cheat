@@ -1,0 +1,94 @@
+% PowerView
+
+# Load Module
+. .\\<path>
+
+# Get list of AD Users
+Get-NetUser
+
+# Get a list of GPO in current domain
+Get-DomainGPO
+
+# Get a list of GPO for specific computer
+Get-DomainGPO -ComputerIdentity <computername>
+
+# Get GPO which use Restricted Groups or groups.xml for interesting Users
+Get-DomainGPOLocalGroup
+
+# Get users which are in a local group of a machine using GPO
+Get-DomainGPOComputerLocalGroupMapping -ComputerIdentity <computername>
+
+# Get machines where the given user is member of a specific group
+Get-DomainGPOUserLocalGroupMapping -Identity <username> -Verbose
+
+# Get OUs in a domain
+Get-DomainOU
+
+# Get GPO applied on an OU
+Get-DomainGPO -Identity <OU-SID>
+
+# list groups of a user
+Get-DomainGroup -UserName <username>
+
+# Get users which are in a local group of a machine in any OU using GPO
+(Get-DomainOU).distinguishedname | %{Get-DomainComputer -SearchBase $_} | Get-DomainGPOComputerLocalGroupMapping
+
+# Get users which are in a local group of a machine in a particular OU using GPO
+(Get-DomainOU -Identity '<ldap-path>').distinguishedname | %{Get-DomainComputer -SearchBase $_} | Get-DomainGPOComputerLocalGroupMapping
+
+# Get computers in an OU
+(Get-DomainOU -Identity <OU-Name>).distinguishedname | %{Get-DomainComputer -SearchBase $_}
+
+# Get ACL associated with a specific object
+Get-DomainObjectACL -Identity "<object-name>" -ResolveGUIDs
+
+# Get ACL associated with a specific LDAP Path
+Get-DomainObjectACL -SearchBase LDAP://<ldap-path> -ResolveGUIDs -Verbose
+
+# Find Interesting ACL
+Find-InterestingDomainAcl -ResolveGUIDs
+
+# Find Interesting ACL for object (e.g user /group)
+Find-InterestingDomainAcl -ResolveGUIDs | ?{$_.IdentityReferenceName -match "<object-name>"}
+
+# Get ACL associated with specific path
+Get-PathAcl -Path "<path>"
+
+# List domain trusts for current domain
+Get-DomainTrust
+
+# List domain trusts for specific domain
+Get-DomainTrust -Domain <domain-name>
+
+# Get details about current forest
+Get-Forest
+
+# Get all domains in current forest
+Get-ForestDomain
+
+# Get all global catalogs for the current forest
+Get-ForestGlobalCatalog
+
+# Map trust of a forest
+Get-ForestTrust
+
+# Map external trusts of a forest
+Get-ForestDomain -Verbose | Get-DomainTrust | ?{$_.TrustAttributes -eq 'FILTER_SIDS'}
+
+# Check local admin access on specific computer
+Test-AdminAccess -ComputerName <computername>
+
+# Check local admin access on computers queried by Domain Controller
+Find-LocalAdminAccess -Verbose
+
+# Find computers where a user/group has sessions
+Find-DomainUserLocation -UserGroupIdentity "<user-or-group-name>" 
+
+# Find computers where a user/group session is available and current user has admin access
+Find-DomainUserLocation -UserGroupIdentity "<user-or-group-name>" -CheckAccess
+
+# Find computers (File Servers and Distributed File Servers) where a user/group session is available
+Find-DomainUserLocation -UserGroupIdentity "<user-or-group-name>" -Stealth
+
+# List kerberoastable users
+Get-DomainUser -SPN

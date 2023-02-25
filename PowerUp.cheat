@@ -1,0 +1,19 @@
+% PowerUp
+
+# Invoke-AllChecks
+Invoke-AllChecks
+
+# Invoke-ServiceAbuse with username
+Invoke-ServiceAbuse -Name "<servicename>" -UserName "<username>"
+
+# Invoke-ServiceAbuse with username and password
+Invoke-ServiceAbuse -Name "<servicename>" -UserName "<username>" -Password "<password>"
+
+# find services with unquoted paths and space in their name
+Get-ServiceUnquoted -Verbose
+
+# find services where the current user can write to its binary path or change arguments to the binary
+Get-ModifiableServiceFile -Verbose
+
+# find services where the current user can modify the configuration
+Get-ModifiableService -Verbose

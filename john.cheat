@@ -1,0 +1,4 @@
+% john.exe
+
+# kerberoast hashes with wordlist
+.\john.exe --wordlist=<wordlist-path> <hashes-path>

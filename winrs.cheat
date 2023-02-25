@@ -1,0 +1,4 @@
+% winrs 
+
+# execute command on remote computer
+winrs -remote:<computername> -u:<username> -p:<password>

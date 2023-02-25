@@ -1,0 +1,22 @@
+% Powershell Remoting
+
+# Invoke-Command execute scripts from file on single computer
+Invoke-Command -FilePath "<filepath>" -ComputerName "<computername>"
+
+# Invoke-Command execute scripts from file on multiple computers
+Invoke-Command -FilePath "<filepath>" -ComputerName "(Get-Content <listofcomputers>)"
+
+# Invoke-Command execute from ScriptBlock on single computer
+Invoke-Command -ScriptBlock {<command>} -ComputerName "<computername>"
+
+# Invoke-Command execute from ScriptBlock on multiple computers
+Invoke-Command -ScriptBlock {<command>} -ComputerName "(Get-Content <listofcomputers>)"
+
+# Invoke-Command execute locally loaded functions on single computer
+Invoke-Command -ScriptBlock ${<function>} -Computername "<computername>"
+
+# Invoke-Command execute locally loaded functions on multiple computers
+Invoke-Command -ScriptBlock ${<function>} -Computername "(Get-Content <listofcomputers>)"
+
+# Invoke-Command execute stateful command (with PSSession variable)
+Invoke-Command -Session <session> -ScriptBlock {<outputvar> = <command>}

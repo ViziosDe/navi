@@ -1,0 +1,53 @@
+% ADModule
+
+# List all Users
+Get-ADUser -Filter *
+
+#List all Users with specific attribute
+Get-ADUser -Filter * | select <properties>
+
+#List all computers
+Get-ADComputer -Filter *
+
+#List all Computers with specific attributes
+Get-ADComputer -Filter * | select <properties>
+
+#List all groups
+Get-ADGroup -Filter *
+
+
+#List specific group
+Get-ADGroup -Identity <groupname> -Filter *
+
+#List members of specific group
+Get-ADGroupMember -Identity <identity>
+
+# Get OUs in a domain
+Get-ADOrganizationalUnit -Fitler * -Properties *
+
+# Get ACL specified by LDAP Path
+(Get-ACL 'LDAP://<ldap-path>').Access
+
+# List domain trusts for current domain
+Get-ADTrust
+
+# List domain trusts for specific domain
+Get-DomainTrust -Identity <domain-name>
+
+# Get details about current forest
+Get-ADForest
+
+# Get all domains in current forest
+(Get-ADForest).Domains
+
+# Get all global catalogs for the current forest
+Get-ADForest | select -ExpandProperty GlobalCatalogs
+
+# Map trust of a forest
+Get-ADTrust -Filter 'intraForest -ne $true' -Server (Get-ADForest).Name
+
+# Map external trusts in a forest
+(Get-ADForest).Domains | %{Get-ADTrust -Filter '(intraForest -ne $True) -and (ForestTransitive -ne $True)'-Server $_}
+
+# Add user to domain group
+Add-ADGroupMember -Identity "<groupname>" -Members "<username>" -Verbose
