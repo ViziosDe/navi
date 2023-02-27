@@ -6,6 +6,12 @@ Get-ADUser -Filter *
 #List all Users with specific attribute
 Get-ADUser -Filter * | select <properties>
 
+# List service account users
+Get-ADServiceAccount -Filter * -Properties *
+
+# Read group Managed Service Accout (gmsa) password
+Get-ADServiceAccount -Identity <username> -Properties * | select PrincipalsAllowedToRetrieveManagedPassword
+
 #List all computers
 Get-ADComputer -Filter *
 
@@ -14,7 +20,6 @@ Get-ADComputer -Filter * | select <properties>
 
 #List all groups
 Get-ADGroup -Filter *
-
 
 #List specific group
 Get-ADGroup -Identity <groupname> -Filter *
@@ -51,3 +56,16 @@ Get-ADTrust -Filter 'intraForest -ne $true' -Server (Get-ADForest).Name
 
 # Add user to domain group
 Add-ADGroupMember -Identity "<groupname>" -Members "<username>" -Verbose
+
+# Set SPN for a User (unique for the domain)
+Set-ADUser -Identity "<username>" -ServicePrincipalNames @{Add='<domain>/<serviceprincipalname>'}
+
+
+# Read LAPS password of computer
+Get-ADComputer -Identity <computername> -Properties ms-mcs-admpwd | select -ExpandProperty ms-mcs-admpwd
+
+# Find Computers with unconstrained delegation 
+Get-ADComputer -Filter {TrustedForDelegation -eq $True}
+
+# Find Users with unconstrained delegation
+Get-ADUser -Filter {TrustedForDelegation -eq $True}

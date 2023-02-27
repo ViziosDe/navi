@@ -1,0 +1,7 @@
+% xopy
+
+# copy file from a to b
+echo F | xcopy <source> <destination>
+
+# copy directory from a to b
+echo D | xcopy <source> <destination>

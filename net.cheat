@@ -1,0 +1,4 @@
+% net 
+
+# mount remote smb share locally
+net use x: \\<computer>\<path> /user:<domain>\<user>

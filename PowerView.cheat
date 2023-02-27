@@ -9,6 +9,9 @@ Get-NetUser
 # Get a list of GPO in current domain
 Get-DomainGPO
 
+# List service account users
+Get-DomainObject -LDAPFilter '(objectClass=msDS-GroupManagedServiceAccount)'
+
 # Get a list of GPO for specific computer
 Get-DomainGPO -ComputerIdentity <computername>
 
@@ -92,3 +95,15 @@ Find-DomainUserLocation -UserGroupIdentity "<user-or-group-name>" -Stealth
 
 # List kerberoastable users
 Get-DomainUser -SPN
+
+# Set SPN for a User (unique for the domain)
+Set-DomainObject -Identity "<username>" -Set @{serviceprincipalname='<domain>/<serviceprincipalname>'}
+
+# Find OUs that can read LAPS passwords on computers
+Get-DomainOU | Get-DomainObjectAcl -ResolveGUIDs | Where-Object {($_.ObjectAceType -like 'ms-Mcs-AdmPwd') -and ($_.ActiveDirectoryRights -match 'ReadProperty')} | ForEach-Object {$_ | Add-Member NoteProperty 'IdentityName' $(Convert-SidToName $_.SecurityIdentifier);$_}
+
+# Read LAPS password of computer
+Get-DomainObject -Identity <computername> | select -ExpandProperty ms-mcs-admpwd
+
+# Find Computers with uncontrained delegation
+Get-DomainComputer -UnConstrained
