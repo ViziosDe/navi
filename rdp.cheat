@@ -1,0 +1,5 @@
+# Enable RDP - Step 1
+Set-ItemProperty -Path 'HKLM:\System\CurrentControlSet\Control\Terminal Server\' -Name "fDenyTSConnections" -Value 0
+
+# Enable RDP through the firewall - Step 2
+Enable-NetFirewallRule -DisplayGroup "Remote Desktop"

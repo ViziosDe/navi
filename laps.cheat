@@ -1,0 +1,2 @@
+# enumerate LAPS and Passwords via plain powershell
+([adsisearcher]"(objectClass=computer)").FindAll() | ForEach-Object { [PSCustomObject]@{ Name = $_.Properties.name -join ';'; ms_Mcs_AdmPwd = ($_.Properties.'ms-mcs-admpwd' -join ';'); ms_Mcs_AdmPwdExpirationTime = ($_.Properties.'ms-mcs-admpwdexpirationtime' -join ';') } }

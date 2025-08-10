@@ -1,0 +1,5 @@
+# Delete all hosts in the db / workspace
+hosts -d
+
+# Delete all services in the db / workspace
+services -d

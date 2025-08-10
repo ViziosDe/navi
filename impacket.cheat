@@ -1,0 +1,2 @@
+# create smb server
+impacket-smbserver share ~/smb -smb2support -user pentest -password pentest
