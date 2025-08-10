@@ -1,4 +1,16 @@
-% WMI
+% WMI (Windows Management Instrumentation)
 
-# List services with SystemName, ServiceName, username
-Get-WmiObject Win32_Service | ft SystemName,Name,StartName
+# List services on a local or remote system including their service accounts
+Get-WmiObject -Class Win32_Service -ComputerName "<computername>" | Format-Table SystemName,Name,StartName
+
+# Query running processes on a remote computer
+Get-WmiObject -Class Win32_Process -ComputerName "<computername>" | Select-Object Name,ProcessId,CommandLine
+
+# Execute a command on a remote computer via WMI and return the process information
+Invoke-WmiMethod -Class Win32_Process -Name Create -ComputerName "<computername>" -ArgumentList "<command>"
+
+# Connect to a remote system with alternate credentials using CIM (WSMan)
+Get-CimInstance -ClassName Win32_OperatingSystem -ComputerName "<computername>" -Credential (Get-Credential)
+
+# Query installed patches and hotfixes on a remote computer
+Get-WmiObject -Class Win32_QuickFixEngineering -ComputerName "<computername>"

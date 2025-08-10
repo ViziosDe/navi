@@ -1,4 +1,10 @@
-% john.exe
+% john
 
-# kerberoast hashes with wordlist
-.\john.exe --wordlist=<wordlist-path> <hashes-path>
+# Crack Kerberoast hashes using a wordlist
+john --wordlist=<wordlist-path> <hashes-path>
+
+# Crack NTLM hashes using incremental mode
+john --format=NT --incremental <hash-file>
+
+# Show the cracked passwords for a given hash file
+john --show <hashes-path>

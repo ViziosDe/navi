@@ -1,22 +1,31 @@
-% Powershell Remoting
+% PowerShell Remoting
 
-# Invoke-Command execute scripts from file on single computer
+# Enable PowerShell Remoting on the local machine (requires administrative privileges)
+Enable-PSRemoting -Force
+
+# Create a persistent remote session to a single computer
+$session = New-PSSession -ComputerName "<computername>"
+
+# Enter an interactive remote session
+Enter-PSSession -Session $session
+
+# Run a script file remotely on a single computer
 Invoke-Command -FilePath "<filepath>" -ComputerName "<computername>"
 
-# Invoke-Command execute scripts from file on multiple computers
-Invoke-Command -FilePath "<filepath>" -ComputerName "(Get-Content <listofcomputers>)"
+# Run a script file remotely on multiple computers (list of computers stored in a text file)
+Invoke-Command -FilePath "<filepath>" -ComputerName (Get-Content <listofcomputers>)
 
-# Invoke-Command execute from ScriptBlock on single computer
-Invoke-Command -ScriptBlock {<command>} -ComputerName "<computername>"
+# Run a command defined inline using a ScriptBlock on a single computer
+Invoke-Command -ScriptBlock { <command> } -ComputerName "<computername>"
 
-# Invoke-Command execute from ScriptBlock on multiple computers
-Invoke-Command -ScriptBlock {<command>} -ComputerName "(Get-Content <listofcomputers>)"
+# Run a locally defined function on a remote computer
+Invoke-Command -ScriptBlock ${<function>} -ComputerName "<computername>"
 
-# Invoke-Command execute locally loaded functions on single computer
-Invoke-Command -ScriptBlock ${<function>} -Computername "<computername>"
+# Copy a file to a remote session
+Copy-Item -Path "<local-path>" -Destination "<remote-path>" -ToSession $session
 
-# Invoke-Command execute locally loaded functions on multiple computers
-Invoke-Command -ScriptBlock ${<function>} -Computername "(Get-Content <listofcomputers>)"
+# Retrieve output from a remote session and store it in a variable (stateful)
+Invoke-Command -Session $session -ScriptBlock { <outputvar> = <command> }
 
-# Invoke-Command execute stateful command (with PSSession variable)
-Invoke-Command -Session <session> -ScriptBlock {<outputvar> = <command>}
+# Remove a session after use
+Remove-PSSession -Session $session

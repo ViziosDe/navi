@@ -1,11 +1,15 @@
-% xopy
+% xcopy
 
-## xopy - file copy helpers
-# copy file from a to b
-echo F | xcopy <source> <destination>
+## xcopy - file copy helpers
 
-# copy directory from a to b
-echo D | xcopy <source> <destination>
+# Copy a single file from source to destination (suppresses confirmation prompts)
+echo F | xcopy <source> <destination> /Y
 
-# Copy files recursively (example usage in Windows environments).
+# Copy a directory from source to destination (creates destination if it doesn't exist)
+echo D | xcopy <source> <destination> /E /I /H /Y
+
+# Copy files and directories recursively
 xcopy <source> <destination> /E /I /H /Y
+
+# Copy files while preserving permissions and file ownership (NTFS only)
+xcopy <source> <destination> /O /X /E /H /K

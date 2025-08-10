@@ -1,19 +1,28 @@
-% PowerUp
+% PowerUp (Privilege Escalation)
 
-# Invoke-AllChecks
+# Run a full privilege escalation audit to identify misconfigurations (requires administrative privileges)
 Invoke-AllChecks
 
-# Invoke-ServiceAbuse with username
+# Invoke service abuse by creating or modifying a service with the specified username
 Invoke-ServiceAbuse -Name "<servicename>" -UserName "<username>"
 
-# Invoke-ServiceAbuse with username and password
+# Invoke service abuse by specifying a username and password (if credentials provided)
 Invoke-ServiceAbuse -Name "<servicename>" -UserName "<username>" -Password "<password>"
 
-# find services with unquoted paths and space in their name
+# Find services with unquoted paths containing spaces (these can often be hijacked)
 Get-ServiceUnquoted -Verbose
 
-# find services where the current user can write to its binary path or change arguments to the binary
+# Find services where the current user can write to the binary path or modify the service's arguments
 Get-ModifiableServiceFile -Verbose
 
-# find services where the current user can modify the configuration
+# Find services where the current user can modify the service configuration
 Get-ModifiableService -Verbose
+
+# Identify vulnerable scheduled tasks where the current user can write to the action path
+Get-VulnSchTask -Verbose
+
+# Find local groups that the current user can modify (potential privilege escalation)
+Get-ModifiableLocalGroup -Verbose
+
+# Check if AlwaysInstallElevated is enabled via registry (misconfiguration allowing MSI privilege escalation)
+Get-RegAlwaysInstallElevated

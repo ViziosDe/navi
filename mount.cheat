@@ -1,2 +1,10 @@
-# VMWare Workstation enable shared folder on Kali
+% mount
+
+# Enable shared folders in VMware Workstation on Kali Linux (mount HGFS)
 sudo /usr/bin/vmhgfs-fuse .host:/ /mnt/hgfs -o subtype=vmhgfs-fuse,allow_other
+
+# Mount a Windows SMB share on Linux
+sudo mount -t cifs //<server>/<share> <mountpoint> -o username=<user>,password=<password>,domain=<domain>
+
+# Mount an ISO file on Linux
+sudo mount -o loop <iso-file> <mountpoint>

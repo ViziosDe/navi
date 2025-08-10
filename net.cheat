@@ -1,4 +1,19 @@
-% net 
+% net
 
-# mount remote smb share locally
-net use x: \\<computer>\<path> /user:<domain>\<user>
+# Map (mount) a remote SMB share to a drive letter
+net use X: \\<computer>\<share> /user:<domain>\<user>
+
+# List local user accounts
+net user
+
+# Display information about a specific user (domain)
+net user <username> /domain
+
+# List local groups on the current machine
+net localgroup
+
+# Add a domain user to the local Administrators group
+net localgroup Administrators <domain>\<username> /add
+
+# List active sessions on a remote computer (requires admin privileges)
+net session \\<computer>

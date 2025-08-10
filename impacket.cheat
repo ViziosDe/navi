@@ -1,2 +1,16 @@
-# create smb server
-impacket-smbserver share ~/smb -smb2support -user pentest -password pentest
+% impacket
+
+# Start an SMB server from a directory using impacket-smbserver
+impacket-smbserver <share-name> <share-path> -smb2support -user <username> -password <password>
+
+# Execute a command on a remote host using psexec (requires valid credentials)
+impacket-psexec <domain>/<username>:<password>@<target> <command>
+
+# Execute a command on a remote host using wmiexec (requires valid credentials)
+impacket-wmiexec <domain>/<username>:<password>@<target> <command>
+
+# Dump password hashes from a remote host using secretsdump (SMB)
+impacket-secretsdump <domain>/<username>:<password>@<target>
+
+# Relay SMB authentication to other protocols using ntlmrelayx
+ntlmrelayx.py -tf <targets-file> -smb2support

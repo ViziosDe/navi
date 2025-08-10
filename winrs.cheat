@@ -1,4 +1,7 @@
-% winrs 
+% winrs
 
-# execute command on remote computer
-winrs -remote:<computername> -u:<username> -p:<password>
+# Execute a command on a remote computer using WinRM
+winrs -r:<computername> -u:<username> -p:<password> <command>
+
+# Open an interactive command prompt on a remote computer
+winrs -r:<computername> -u:<username> -p:<password> cmd

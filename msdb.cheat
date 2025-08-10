@@ -1,5 +1,13 @@
-# Delete all hosts in the db / workspace
+% Metasploit Database (msfconsole)
+
+# Delete all hosts in the current workspace
 hosts -d
 
-# Delete all services in the db / workspace
+# Delete all services in the current workspace
 services -d
+
+# List all credentials stored in the database
+creds
+
+# Change to a different workspace
+workspace <workspace-name>

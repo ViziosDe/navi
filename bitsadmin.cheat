@@ -1,2 +1,13 @@
-# Download file via bitsadmin
-bitsadmin /Transfer theJob http://<ip>/<filepath> <outputpath>
+% bitsadmin
+
+# Download a file via BITS by creating a transfer job
+bitsadmin /transfer <jobname> <source-url> <destination-path>
+
+# Resume a suspended or errored BITS job
+bitsadmin /resume <jobname>
+
+# Monitor the status of an existing BITS job
+bitsadmin /monitor <jobname>
+
+# List all BITS jobs for all users
+bitsadmin /list /allusers

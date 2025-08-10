@@ -1,71 +1,79 @@
-% ADModule
+% Active Directory Enumeration & Management
 
-# List all Users
-Get-ADUser -Filter *
+# List all user accounts in the current domain (returns default properties)
+Get-ADUser -Filter * -Properties *
 
-#List all Users with specific attribute
-Get-ADUser -Filter * | select <properties>
+# List user accounts with specific properties (replace <properties> with comma-separated property names such as DisplayName,LastLogonDate)
+Get-ADUser -Filter * -Properties <properties> | Select-Object SamAccountName,<properties>
 
-# List service account users
-Get-ADServiceAccount -Filter * -Properties *
+# Find all disabled user accounts
+Get-ADUser -Filter {Enabled -eq $False} -Properties Enabled | Select-Object SamAccountName,Enabled
 
-# Read group Managed Service Accout (gmsa) password
-Get-ADServiceAccount -Identity <username> -Properties * | select PrincipalsAllowedToRetrieveManagedPassword
+# Find all users whose password never expires
+Get-ADUser -Filter {PasswordNeverExpires -eq $True} -Properties PasswordNeverExpires | Select-Object SamAccountName,PasswordNeverExpires
 
-#List all computers
-Get-ADComputer -Filter *
+# List members of a specific group (e.g., Domain Admins)
+Get-ADGroupMember -Identity "<groupname>" -Recursive | Select-Object Name,SamAccountName,ObjectClass
 
-#List all Computers with specific attributes
-Get-ADComputer -Filter * | select <properties>
+# List service account users, including group-managed service accounts (gMSA)
+Get-ADServiceAccount -Filter * -Properties * | Select-Object Name,SamAccountName,ManagedPasswordIntervalInDays
 
-#List all groups
-Get-ADGroup -Filter *
+# Retrieve the principals allowed to read a gMSA password
+Get-ADServiceAccount -Identity <username> -Properties * | Select-Object -ExpandProperty PrincipalsAllowedToRetrieveManagedPassword
 
-#List specific group
-Get-ADGroup -Identity <groupname> -Filter *
+# List all computer objects
+Get-ADComputer -Filter * -Properties *
 
-#List members of specific group
-Get-ADGroupMember -Identity <identity>
+# List computer objects with specific properties (replace <properties> with comma-separated property names)
+Get-ADComputer -Filter * -Properties <properties> | Select-Object Name,<properties>
 
-# Get OUs in a domain
-Get-ADOrganizationalUnit -Fitler * -Properties *
+# Find computers with unconstrained delegation enabled
+Get-ADComputer -Filter {TrustedForDelegation -eq $True} -Properties TrustedForDelegation | Select-Object Name,TrustedForDelegation
 
-# Get ACL specified by LDAP Path
-(Get-ACL 'LDAP://<ldap-path>').Access
+# Find user accounts with unconstrained delegation enabled
+Get-ADUser -Filter {TrustedForDelegation -eq $True} -Properties TrustedForDelegation | Select-Object SamAccountName,TrustedForDelegation
 
-# List domain trusts for current domain
-Get-ADTrust
+# Enumerate organizational units (OUs) in a domain
+Get-ADOrganizationalUnit -Filter * -Properties * | Select-Object Name,DistinguishedName
 
-# List domain trusts for specific domain
-Get-DomainTrust -Identity <domain-name>
+# List all groups in the domain
+Get-ADGroup -Filter * -Properties *
 
-# Get details about current forest
-Get-ADForest
+# Find a specific group by name
+Get-ADGroup -Identity "<groupname>"
 
-# Get all domains in current forest
-(Get-ADForest).Domains
-
-# Get all global catalogs for the current forest
-Get-ADForest | select -ExpandProperty GlobalCatalogs
-
-# Map trust of a forest
-Get-ADTrust -Filter 'intraForest -ne $true' -Server (Get-ADForest).Name
-
-# Map external trusts in a forest
-(Get-ADForest).Domains | %{Get-ADTrust -Filter '(intraForest -ne $True) -and (ForestTransitive -ne $True)'-Server $_}
-
-# Add user to domain group
+# Add a user to a domain group
 Add-ADGroupMember -Identity "<groupname>" -Members "<username>" -Verbose
 
-# Set SPN for a User (unique for the domain)
+# Remove a user from a domain group
+Remove-ADGroupMember -Identity "<groupname>" -Members "<username>" -Confirm:$False
+
+# Set a Service Principal Name (SPN) on a user account (required for Kerberos authentication)
 Set-ADUser -Identity "<username>" -ServicePrincipalNames @{Add='<domain>/<serviceprincipalname>'}
 
+# Enumerate accounts with Service Principal Names set (useful for Kerberoasting)
+Get-ADUser -Filter {ServicePrincipalName -ne $Null} -Properties ServicePrincipalName | Select-Object SamAccountName,ServicePrincipalName
 
-# Read LAPS password of computer
-Get-ADComputer -Identity <computername> -Properties ms-mcs-admpwd | select -ExpandProperty ms-mcs-admpwd
+# Find accounts that are allowed to delegate (constrained delegation)
+Get-ADUser -Filter {msDS-AllowedToDelegateTo -like '*'} -Properties msDS-AllowedToDelegateTo | Select-Object SamAccountName,msDS-AllowedToDelegateTo
 
-# Find Computers with unconstrained delegation 
-Get-ADComputer -Filter {TrustedForDelegation -eq $True}
+# Get details about the current forest
+Get-ADForest
 
-# Find Users with unconstrained delegation
-Get-ADUser -Filter {TrustedForDelegation -eq $True}
+# Enumerate all domains in the current forest
+(Get-ADForest).Domains
+
+# List all global catalog servers in the current forest
+Get-ADForest | Select-Object -ExpandProperty GlobalCatalogs
+
+# List domain trusts for the current domain
+Get-ADTrust
+
+# List domain trusts for a specific domain
+Get-ADTrust -Identity <domain-name>
+
+# Map external trusts in a forest
+(Get-ADForest).Domains | ForEach-Object { Get-ADTrust -Filter '(intraForest -ne $True) -and (ForestTransitive -ne $True)' -Server $_ }
+
+# Read Local Administrator Password Solution (LAPS) password of a computer
+Get-ADComputer -Identity <computername> -Properties ms-mcs-admpwd | Select-Object -ExpandProperty ms-mcs-admpwd

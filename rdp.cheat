@@ -1,5 +1,10 @@
-# Enable RDP - Step 1
-Set-ItemProperty -Path 'HKLM:\System\CurrentControlSet\Control\Terminal Server\' -Name "fDenyTSConnections" -Value 0
+% RDP (Remote Desktop Protocol)
 
-# Enable RDP through the firewall - Step 2
+# Enable Remote Desktop on a system (set fDenyTSConnections to 0)
+Set-ItemProperty -Path 'HKLM:\System\CurrentControlSet\Control\Terminal Server' -Name "fDenyTSConnections" -Value 0
+
+# Enable the Remote Desktop firewall rule group
 Enable-NetFirewallRule -DisplayGroup "Remote Desktop"
+
+# Connect to a remote host using the Microsoft Remote Desktop client (MSTSC) with a specified user
+mstsc /v:<hostname> /u:<username>

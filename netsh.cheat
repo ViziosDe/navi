@@ -1,5 +1,13 @@
 % netsh
 
-# local port forwarding
-
+# Configure a local port proxy to forward traffic from a local port to a remote host
 netsh interface portproxy add v4tov4 listenaddress=127.0.0.1 listenport=<local-port> connectaddress=<forward-host> connectport=<forward-port>
+
+# Add a persistent static route on an interface
+netsh interface ipv4 add route <destination-network>/<mask> <interface> <gateway>
+
+# Disable Windows Firewall for the domain profile
+netsh advfirewall set domainprofile state off
+
+# Add an inbound firewall rule to allow traffic on a TCP port
+netsh advfirewall firewall add rule name="<rule-name>" dir=in action=allow protocol=TCP localport=<port>

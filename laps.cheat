@@ -1,2 +1,13 @@
-# enumerate LAPS and Passwords via plain powershell
-([adsisearcher]"(objectClass=computer)").FindAll() | ForEach-Object { [PSCustomObject]@{ Name = $_.Properties.name -join ';'; ms_Mcs_AdmPwd = ($_.Properties.'ms-mcs-admpwd' -join ';'); ms_Mcs_AdmPwdExpirationTime = ($_.Properties.'ms-mcs-admpwdexpirationtime' -join ';') } }
+% Local Administrator Password Solution (LAPS)
+
+# Enumerate LAPS passwords and expiration times via plain PowerShell
+([adsisearcher]"(objectClass=computer)").FindAll() | ForEach-Object {
+    [PSCustomObject]@{
+        Name = $_.Properties.name -join ';'
+        ms_Mcs_AdmPwd = ($_.Properties.'ms-mcs-admpwd' -join ';')
+        ms_Mcs_AdmPwdExpirationTime = ($_.Properties.'ms-mcs-admpwdexpirationtime' -join ';')
+    }
+}
+
+# Retrieve the LAPS password for a specific computer using PowerView
+Get-DomainObject -Identity <computername> | Select-Object -ExpandProperty ms-mcs-admpwd

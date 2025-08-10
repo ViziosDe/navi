@@ -1,14 +1,19 @@
-# Remove Definitions
-cmd.exe /c "C:\Program Files\Windows Defender\MpCmdRun.exe" -removedefinitions -all
+% Windows Defender & Firewall
 
-# Disable RealTimeProtection through Registry Key
-REG ADD "HKLM\SOFTWARE\Policies\Microsoft\Windows Defender" /v "DisableRealtimeMonitoring " /t REG_DWORD /d 1 /f
+# Remove all Windows Defender malware definitions (requires administrative privileges)
+"C:\Program Files\Windows Defender\MpCmdRun.exe" -removedefinitions -all
 
-# Disable BehaviourMonitoring through Registry Key
-REG ADD "HKLM\SOFTWARE\Policies\Microsoft\Windows Defender" /v "DisableBehaviorMonitoring " /t REG_DWORD /d 1 /f
+# Disable real‑time monitoring via registry (requires restart of the service)
+REG ADD "HKLM\SOFTWARE\Policies\Microsoft\Windows Defender" /v "DisableRealtimeMonitoring" /t REG_DWORD /d 1 /f
 
-# Disable IPS IOAVProtection RealTimeMonitoring through Powershell
-Set-MpPreference -DisableIntrusionPreventionSystem $true -DisableIOAVProtection $true -DisableRealtimeMonitoring $true 
+# Disable behaviour monitoring via registry
+REG ADD "HKLM\SOFTWARE\Policies\Microsoft\Windows Defender" /v "DisableBehaviorMonitoring" /t REG_DWORD /d 1 /f
 
-# Disable local firewall
-NetSh Advfirewall set allprofiles state off 
+# Disable intrusion prevention, IOAV protection and real‑time monitoring using PowerShell
+Set-MpPreference -DisableIntrusionPreventionSystem $true -DisableIOAVProtection $true -DisableRealtimeMonitoring $true
+
+# Turn off all Windows Firewall profiles
+NetSh Advfirewall set allprofiles state off
+
+# Add an inbound firewall rule to allow traffic on a specific port
+New-NetFirewallRule -DisplayName "<rule-name>" -Direction Inbound -Protocol TCP -LocalPort <port> -Action Allow
