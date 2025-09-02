@@ -1,0 +1,2 @@
+# Enumerate / Find vulnerable templates
+certipy find -u '<username>' -p '<password>' -dc-ip '<dc-ip>'

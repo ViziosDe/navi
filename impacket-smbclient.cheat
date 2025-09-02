@@ -1,0 +1,7 @@
+# impacket-smbclient
+
+-hashes
+
+# connect using Username and Passwort
+impacket-smbclient <username>:'<password>'@<target-ip>
+

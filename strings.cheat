@@ -1,0 +1,4 @@
+# strings
+
+## strings with utf16-le encoding
+strings --encoding=l

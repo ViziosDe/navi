@@ -1,0 +1,2 @@
+# Start bloodhound-python ingestor 
+./bloodhound.py -u '<username>' -p '<password>' -d <domain-fqdn> -c All -ns <dns-ip> -dc <dc-fqdn>

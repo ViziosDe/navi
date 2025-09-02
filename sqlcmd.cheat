@@ -19,4 +19,4 @@ sqlcmd -E -Q "<Query>"
 sqlcmd -E -Q "SELECT SYSTEM_USER, USER_NAME();"
 
 # Execute a query against a remote SQL Server using SQL authentication
-sqlcmd -S <server> -U <user> -P <password> -Q "<Query>"
+sqlcmd -S <server> -U <user> -P '<password>' -Q '<Query>'

@@ -1,0 +1,10 @@
+# CrackMapExec
+
+# enumerate single user (also badpwdcount)
+crackmapexec smb <domain-controller-ip> -u <username> -p '<password>' --users <user>
+
+# crackmapexec use ssh private key for password spraying (ssh key spraying)
+crackmapexec ssh <usernames-files> -u user-ssh -p '' --key-file <ssh-key>  --continue-on-success
+
+# crackmapexec generate smb relay list
+cme smb <cidr-range> -u <username> -p <password> --gen-relay-list <output-text-file>
